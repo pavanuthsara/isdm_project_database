@@ -155,23 +155,62 @@ CREATE TABLE Dependent (
 	CONSTRAINT dependent_fk FOREIGN KEY (userId) REFERENCES user(userId)
 );
 
+/* Claim Table */
+CREATE TABLE Claim(
+	claimId VARCHAR(10)  NOT NULL,
+	userId VARCHAR(10)  NOT NULL,
+	amount FLOAT  NOT NULL,
+	claimDescription VARCHAR(250)  NOT NULL,
+	date DATE  NOT NULL,
+	status VARCHAR(50)  NOT NULL,
+	adminId VARCHAR(10)  NOT NULL,
+
+	CONSTRAINT claim_pk PRIMARY KEY(claimId),
+	CONSTRAINT claim_fk1 FOREIGN KEY(userId) REFERENCES user(userId),
+	CONSTRAINT claim_fk2 FOREIGN KEY(adminId) REFERENCES admin(adminId)
+);
+
+/* Feedback Table */
+CREATE TABLE feedback (
+    feedbackId VARCHAR(6) NOT NULL,
+    rating INT NOT NULL,
+    comment VARCHAR(255) NOT NULL,
+    date DATE NOT NULL,
+    userId VARCHAR(6) NOT NULL,
+
+	CONSTRAINT feedback_pk PRIMARY KEY(feedbackId),
+	CONSTRAINT feedback_fk FOREIGN KEY(userId) REFERENCES user(userId)
+);
+
+/* Feedback Approve Table */
+CREATE TABLE feedbackApprove(
+    feedbackId VARCHAR(6) NOT NULL,
+    employeeId VARCHAR(6) NOT NULL,
+    date DATE NOT NULL,
+
+    CONSTRAINT feedbackApprove_pk PRIMARY KEY(feedbackId, employeeId),
+    CONSTRAINT feedbackApprove_fk1 FOREIGN KEY(feedbackId) REFERENCES feedback(feedbackId),
+    CONSTRAINT feedbackApprove_fk2 FOREIGN KEY(employeeId) REFERENCES employee(employeeId)
+);
+
+/* Complaint Resolve Table */
+CREATE TABLE complaintResolve (
+    complaintId VARCHAR(6) NOT NULL,
+    employeeId VARCHAR(6) NOT NULL,
+    date DATE NOT NULL,
+
+    CONSTRAINT complaintResolve_pk PRIMARY KEY(complaintId, employeeId),
+	CONSTRAINT complaintResolve_fk1 FOREIGN KEY(complaintId) REFERENCES complaint(complaintId),
+    CONSTRAINT complaintResolve_fk2 FOREIGN KEY(employeeId) REFERENCES employee(employeeId)
+);
 /*executed until now*/
 
 
 
-CREATE TABLE Claim(
-claimID VARCHAR(10),
-userID VARCHAR(10),
-amount INT,
-claimDescription VARCHAR(50),
-claimDate DATE,
-Status VARCHAR(10),
-AdminID VARCHAR(10)
 
-CONSTRAINT claim_pk PRIMARY KEY(claimID),
-CONSTRAINT claim_fk FOREIGN KEY(userID) REFERENCES User(userID)
 
-);
+
+
 
 
 
