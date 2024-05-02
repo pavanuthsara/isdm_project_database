@@ -323,6 +323,7 @@ VALUES
     ('U4', 'Thilani Rajapaksa Jr.', 'Female', '2019-05-15'),
     ('U5', 'Kamal Jayawardena Jr.', 'Male', '2022-08-30');
 
+/* Insert data Claim Table */
 INSERT INTO Claim (claimId, userId, amount, claimDescription, date, status, adminId)
 VALUES
     ('CL1', 'U1', 50000.00, 'Vehicle Accident', '2024-05-10', 'Pending', 'A1'),
@@ -331,6 +332,7 @@ VALUES
     ('CL4', 'U4', 20000.00, 'Theft Incident', '2024-05-18', 'Denied', 'A4'),
     ('CL5', 'U5', 40000.00, 'Natural Disaster', '2024-05-20', 'Pending', 'A5');
 
+/* Insert data Feedback Table */
 INSERT INTO feedback (feedbackId, rating, comment, date, userId)
 VALUES
     ('FB1', 4, 'Great service!', '2024-05-11', 'U1'),
@@ -339,8 +341,24 @@ VALUES
     ('FB4', 4, 'Responsive customer support.', '2024-05-19', 'U4'),
     ('FB5', 2, 'Disappointed with the quality.', '2024-05-21', 'U5');
 
+/* Insert data Feedback Approve Table */
+INSERT INTO feedbackApprove (feedbackId, employeeId, date)
+VALUES
+    ('FB1', 'E1', '2024-05-12'),
+    ('FB2', 'E2', '2024-05-14'),
+    ('FB3', 'E3', '2024-05-17'),
+    ('FB4', 'E4', '2024-05-20'),
+    ('FB5', 'E5', '2024-05-22');
+
+/* Insert data Complaint Resolve Table */
+INSERT INTO complaintResolve (complaintId, employeeId, date)
+VALUES
+    ('CP1', 'E1', '2024-05-11'),
+    ('CP2', 'E2', '2024-05-13'),
+    ('CP3', 'E3', '2024-05-16'),
+    ('CP4', 'E4', '2024-05-19'),
+    ('CP5', 'E5', '2024-05-21');
 
 
-/*executed until now*/
 
 
