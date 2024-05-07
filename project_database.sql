@@ -1,5 +1,5 @@
 /* Plan Table */
-CREATE TABLE plan (
+CREATE TABLE [plan](
 	planId VARCHAR(10) NOT NULL,
     planName VARCHAR(25) NOT NULL,
     planFee FLOAT NOT NULL,
@@ -8,6 +8,7 @@ CREATE TABLE plan (
     
     CONSTRAINT plan_pk PRIMARY KEY(planId)
 );
+
 
 /* Manager Table */
 CREATE TABLE manager (
@@ -26,7 +27,7 @@ CREATE TABLE Report (
     reportId VARCHAR(6) NOT NULL,
     reportDate DATE NOT NULL,
     type VARCHAR(150) NOT NULL,
-    managerId VARCHAR(6) NOT NULL,
+    managerId VARCHAR(10) NOT NULL,
 
 	CONSTRAINT report_pk PRIMARY KEY(reportId),
 	CONSTRAINT report_fk FOREIGN KEY (managerId) REFERENCES manager(managerId)
@@ -40,7 +41,7 @@ CREATE TABLE admin(
 	password VARCHAR(30) NOT NULL,
 	dob DATE NOT NULL,
 	address VARCHAR(150) NOT NULL,
-	managerId VARCHAR(6) NOT NULL,
+	managerId VARCHAR(10) NOT NULL,
 
 	CONSTRAINT admin_pk PRIMARY KEY(adminId),
 	CONSTRAINT admin_fk FOREIGN KEY (managerId) REFERENCES manager(managerId)
@@ -64,7 +65,7 @@ CREATE TABLE employee(
 	dob DATE NOT NULL,
 	address VARCHAR(250) NOT NULL,
 	nic VARCHAR(20),
-	adminId VARCHAR(10),
+	adminId VARCHAR(6),
 
 	CONSTRAINT employee_pk PRIMARY KEY (employeeId),
 	CONSTRAINT employee_fk FOREIGN KEY (adminId) REFERENCES admin(adminId)
@@ -80,7 +81,7 @@ CREATE TABLE employeeContact(
 );
 
 /* User Table */
-CREATE Table user (
+CREATE Table [user] (
 	userId VARCHAR(6) NOT NULL, 
 	firstName VARCHAR(30)  NOT NULL,
     lastNAME VARCHAR(30)  NOT NULL, 
@@ -88,7 +89,7 @@ CREATE Table user (
     email VARCHAR(150)  NOT NULL,
     password VARCHAR(35)  NOT NULL,
     gender VARCHAR(10)  NOT NULL,
-    planId VARCHAR(6) NOT NULL,
+    planId VARCHAR(10) NOT NULL,
     adminId VARCHAR(6) NOT NULL,
     houseNo VARCHAR(50) NOT NULL ,
     street VARCHAR(50) NOT NULL,
@@ -96,7 +97,7 @@ CREATE Table user (
     postalCode VARCHAR(20) NOT NULL,
 
 	CONSTRAINT user_pk PRIMARY KEY(userId),
-	CONSTRAINT user_fk1 FOREIGN KEY(planId) REFERENCES plan(planId),
+	CONSTRAINT user_fk1 FOREIGN KEY(planId) REFERENCES [plan](planId),
 	CONSTRAINT user_fk2 FOREIGN KEY(adminId) REFERENCES admin(adminId)
 );
 
@@ -106,7 +107,7 @@ CREATE Table userContact(
 	phoneNo VARCHAR(10) NOT NULL,
 
 	CONSTRAINT userContact_pk PRIMARY KEY(userId, phoneNo),
-    CONSTRAINT userContact_fk FOREIGN KEY (userId) REFERENCES user(userId)
+    CONSTRAINT userContact_fk FOREIGN KEY (userId) REFERENCES [user](userId)
 );
 
 /* Annual Fee Table */
@@ -118,17 +119,17 @@ CREATE Table annualFee(
     expireDate DATE NOT NULL,
 
 	CONSTRAINT annualFee_pk PRIMARY KEY(feeId),
-    CONSTRAINT annualFee_fk FOREIGN KEY (userId) REFERENCES user(userId)
+    CONSTRAINT annualFee_fk FOREIGN KEY (userId) REFERENCES [user](userId)
 );
 
 /* Plan Update Table */
 CREATE TABLE planUpdate (
-	planId	VARCHAR(6) NOT NULL,
-	managerId VARCHAR(6) NOT NULL,
+	planId	VARCHAR(10) NOT NULL,
+	managerId VARCHAR(10) NOT NULL,
 	date DATE NOT NULL,
 
 	CONSTRAINT planUpdate_pk PRIMARY KEY(planId, managerId),
-	CONSTRAINT planUpdate_fk1 FOREIGN KEY (planId) REFERENCES plan(planId),
+	CONSTRAINT planUpdate_fk1 FOREIGN KEY (planId) REFERENCES [plan](planId),
 	CONSTRAINT planUpdate_fk2 FOREIGN KEY (managerId) REFERENCES manager(managerId)
 );
 
@@ -141,32 +142,32 @@ CREATE TABLE complaint (
 	status VARCHAR(20) NOT NULL,
 
 	CONSTRAINT complaint_pk PRIMARY KEY(complaintId),
-	CONSTRAINT complaint_fk FOREIGN KEY (userId) REFERENCES user(userId)
+	CONSTRAINT complaint_fk FOREIGN KEY (userId) REFERENCES [user](userId)
 );
 
 /* Dependent Table */
 CREATE TABLE Dependent (
-	userId VARCHAR(10) NOT NULL,
+	userId VARCHAR(6) NOT NULL,
 	name VARCHAR(50) NOT NULL,
 	gender VARCHAR(6) NOT NULL,
 	dob date NOT NULL,
 
 	CONSTRAINT dependent_pk PRIMARY KEY(userId, name),
-	CONSTRAINT dependent_fk FOREIGN KEY (userId) REFERENCES user(userId)
+	CONSTRAINT dependent_fk FOREIGN KEY (userId) REFERENCES [user](userId)
 );
 
 /* Claim Table */
 CREATE TABLE Claim(
 	claimId VARCHAR(10)  NOT NULL,
-	userId VARCHAR(10)  NOT NULL,
+	userId VARCHAR(6)  NOT NULL,
 	amount FLOAT  NOT NULL,
 	claimDescription VARCHAR(250)  NOT NULL,
 	date DATE  NOT NULL,
 	status VARCHAR(50)  NOT NULL,
-	adminId VARCHAR(10)  NOT NULL,
+	adminId VARCHAR(6)  NOT NULL,
 
 	CONSTRAINT claim_pk PRIMARY KEY(claimId),
-	CONSTRAINT claim_fk1 FOREIGN KEY(userId) REFERENCES user(userId),
+	CONSTRAINT claim_fk1 FOREIGN KEY(userId) REFERENCES [user](userId),
 	CONSTRAINT claim_fk2 FOREIGN KEY(adminId) REFERENCES admin(adminId)
 );
 
@@ -179,13 +180,13 @@ CREATE TABLE feedback (
     userId VARCHAR(6) NOT NULL,
 
 	CONSTRAINT feedback_pk PRIMARY KEY(feedbackId),
-	CONSTRAINT feedback_fk FOREIGN KEY(userId) REFERENCES user(userId)
+	CONSTRAINT feedback_fk FOREIGN KEY(userId) REFERENCES [user](userId)
 );
 
 /* Feedback Approve Table */
 CREATE TABLE feedbackApprove(
     feedbackId VARCHAR(6) NOT NULL,
-    employeeId VARCHAR(6) NOT NULL,
+    employeeId VARCHAR(10) NOT NULL,
     date DATE NOT NULL,
 
     CONSTRAINT feedbackApprove_pk PRIMARY KEY(feedbackId, employeeId),
@@ -196,7 +197,7 @@ CREATE TABLE feedbackApprove(
 /* Complaint Resolve Table */
 CREATE TABLE complaintResolve (
     complaintId VARCHAR(6) NOT NULL,
-    employeeId VARCHAR(6) NOT NULL,
+    employeeId VARCHAR(10) NOT NULL,
     date DATE NOT NULL,
 
     CONSTRAINT complaintResolve_pk PRIMARY KEY(complaintId, employeeId),
@@ -204,8 +205,9 @@ CREATE TABLE complaintResolve (
     CONSTRAINT complaintResolve_fk2 FOREIGN KEY(employeeId) REFERENCES employee(employeeId)
 );
 
+
 /* Insert data Plan Table */
-INSERT INTO plan (planId, planName, planFee, planDescription, duration)
+INSERT INTO [plan] (planId, planName, planFee, planDescription, duration)
 VALUES
     ('P1', 'Basic', 120000, 'Basic plan with limited features', 1),
     ('P2', 'Standard', 150000, 'Standard plan with additional features', 2),
@@ -269,7 +271,7 @@ VALUES
     ('E5', '0723456789');
 
 /* Insert data User Table */
-INSERT INTO user (userId, firstName, lastName, dob, email, password, gender, planId, adminId, houseNo, street, city, postalCode)
+INSERT INTO [user](userId, firstName, lastName, dob, email, password, gender, planId, adminId, houseNo, street, city, postalCode)
 VALUES
     ('U1', 'Samantha', 'Perera', '1990-05-15', 'samantha@example.com', 'password123', 'Female', 'P1', 'A1', '123', 'Galle Road', 'Colombo', '00100'),
     ('U2', 'Nimal', 'Silva', '1985-08-20', 'nimal@example.com', 'pass456', 'Male', 'P2', 'A2', '456', 'Kandy Road', 'Kandy', '20000'),
@@ -358,7 +360,3 @@ VALUES
     ('CP3', 'E3', '2024-05-16'),
     ('CP4', 'E4', '2024-05-19'),
     ('CP5', 'E5', '2024-05-21');
-
-
-
-
